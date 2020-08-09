@@ -24,7 +24,7 @@ UI.prototype.addProfileToList = function ({
         <td>${name}</td>
         <td>${email}</td>
         <td>${profession}</td>
-        <td><i class="fa fa-trash"></i> <i class="fa fa-edit"></i></td>
+        <td><i id="delete" class="fa fa-trash"></i> <i class="fa fa-edit"></i></td>
         `
     document.querySelector('#profile-list').appendChild(tr);
 }
@@ -35,6 +35,14 @@ UI.prototype.clearField = function () {
     document.querySelector('#email').value = '';
     document.querySelector('#profession').value = '';
 }
+
+// Delete profile
+UI.prototype.deleteProfile = function (target) {
+    if (target.id === 'delete') {
+        target.parentElement.parentElement.remove();
+    }
+}
+
 
 document.querySelector('form').addEventListener('submit', e => {
     const name = document.querySelector('#name').value;
@@ -53,3 +61,11 @@ document.querySelector('form').addEventListener('submit', e => {
     }
     e.preventDefault();
 });
+
+
+// Event delegation (parent)
+document.querySelector('#profile-list').addEventListener('click', e => {
+    //Instantiate UI object
+    const ui = new UI();
+    ui.deleteProfile(e.target);
+})
