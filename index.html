@@ -10,12 +10,13 @@
         integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
         crossorigin="anonymous" />
     <title>Profile Builder App With Vanilla</title>
+
 </head>
 
 <body>
     <main class="container mt-5">
         <h2 class="text-center">Profile Builder App</h2>
-        <form>
+        <form id="form">
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" placeholder="Your Name">
@@ -32,7 +33,7 @@
             <table class="table table-striped mt-5">
                 <thead>
                     <tr>
-                        <th scope="col">No#</th>
+                        <th scope="col">No</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">Profession</th>
@@ -40,18 +41,17 @@
                     </tr>
                 </thead>
                 <tbody id="profile-list">
-                    <tr>
+                    <!-- <tr>
                         <th scope="row">1</th>
                         <td>Name</td>
                         <td>Email</td>
                         <td>Profession</td>
                         <td><i class="fa fa-trash"></i> <i class="fa fa-edit"></i></td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </form>
     </main>
-
     <script src="main.js"></script>
 </body>
 
