@@ -5,30 +5,38 @@ function Profile(name, email, profession) {
     this.profession = profession;
 }
 
-// Prototype for single location on every execution
-function UI() {
-    UI.prototype.addProfileToList = function ({
-        // Object destructuring from profile object
-        name,
-        email,
-        profession
-    }) {
-        // console.log(name, email, profession);
-        // Create html table
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+// UI constructor
+function UI() {}
+// Prototype is used for single location on every execution
+
+// Adding item to UI
+UI.prototype.addProfileToList = function ({
+    // Object destructuring from profile object
+    name,
+    email,
+    profession
+}) {
+    // console.log(name, email, profession);
+    // Create html table
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
         <th scope="row">1</th>
         <td>${name}</td>
         <td>${email}</td>
         <td>${profession}</td>
         <td><i class="fa fa-trash"></i> <i class="fa fa-edit"></i></td>
         `
-        document.querySelector('#profile-list').appendChild(tr);
-    }
+    document.querySelector('#profile-list').appendChild(tr);
+}
+
+// Clear Fields after submission
+UI.prototype.clearField = function () {
+    document.querySelector('#name').value = '';
+    document.querySelector('#email').value = '';
+    document.querySelector('#profession').value = '';
 }
 
 document.querySelector('form').addEventListener('submit', e => {
-    e.preventDefault();
     const name = document.querySelector('#name').value;
     const email = document.querySelector('#email').value;
     const profession = document.querySelector('#profession').value;
@@ -36,5 +44,12 @@ document.querySelector('form').addEventListener('submit', e => {
     const profile = new Profile(name, email, profession);
     //Instantiate UI object
     const ui = new UI();
-    ui.addProfileToList(profile);
+    // Validation
+    if (name === '' || email === '' || profession === '') {
+
+    } else {
+        ui.addProfileToList(profile);
+        ui.clearField();
+    }
+    e.preventDefault();
 });
