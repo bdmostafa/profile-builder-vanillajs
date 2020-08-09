@@ -48,8 +48,12 @@ UI.prototype.showAlert = function (message, className) {
     const form = document.querySelector('form');
     const container = document.querySelector('.container');
     const div = document.createElement('div');
+
     div.className = `alert alert-${className}`;
-    // div.classList.add(`alert alert-${className}`);
+
+    // div.classList.add(`alert`);
+    // div.classList.add(`alert-${className}`)
+
     div.textContent = message;
     container.insertBefore(div, form);
     setTimeout(() => {
@@ -81,10 +85,10 @@ document.querySelector('form').addEventListener('submit', e => {
 });
 
 
-// Event delegation (parent) for delete item
-document.querySelector('#profile-list').addEventListener('click', e => {
-    //Instantiate UI object
-    const ui = new UI();
-    ui.showAlert('Profile is removed successfully', 'info')
-    ui.deleteProfile(e.target);
-})
+// // Event delegation (parent) for delete item
+// document.querySelector('#profile-list').addEventListener('click', e => {
+//     //Instantiate UI object
+//     const ui = new UI();
+//     ui.showAlert('Profile is removed successfully', 'info')
+//     ui.deleteProfile(e.target);
+// })
