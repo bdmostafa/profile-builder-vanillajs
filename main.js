@@ -47,9 +47,11 @@ UI.prototype.deleteProfile = function (target) {
 UI.prototype.editProfile = function (target) {
     if (target.id === 'edit') {
         const parent = target.parentElement.parentElement;
+        // Capture the values from target table
         const targetName = parent.children[1].innerText;
         const targetEmail = parent.children[2].innerText;
         const targetProfession = parent.children[3].innerText;
+        // Display the target values onto the form
         document.querySelector('#name').value = targetName;
         document.querySelector('#email').value = targetEmail;
         document.querySelector('#profession').value = targetProfession;
