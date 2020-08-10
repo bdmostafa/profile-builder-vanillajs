@@ -24,7 +24,7 @@ UI.prototype.addProfileToList = function ({
         <td>${name}</td>
         <td>${email}</td>
         <td>${profession}</td>
-        <td><i id="delete" class="fa fa-trash"></i> <i class="fa fa-edit"></i></td>
+        <td><i id="delete" class="fa fa-trash"></i> <i id="edit" class="fa fa-edit"></i></td>
         `
     document.querySelector('#profile-list').appendChild(tr);
 }
@@ -39,6 +39,20 @@ UI.prototype.clearField = function () {
 // Delete profile
 UI.prototype.deleteProfile = function (target) {
     if (target.id === 'delete') {
+        target.parentElement.parentElement.remove();
+    }
+}
+
+// Edit profile
+UI.prototype.editProfile = function (target) {
+    if (target.id === 'edit') {
+        const parent = target.parentElement.parentElement;
+        const targetName = parent.children[1].innerText;
+        const targetEmail = parent.children[2].innerText;
+        const targetProfession = parent.children[3].innerText;
+        document.querySelector('#name').value = targetName;
+        document.querySelector('#email').value = targetEmail;
+        document.querySelector('#profession').value = targetProfession;
         target.parentElement.parentElement.remove();
     }
 }
@@ -81,14 +95,17 @@ document.querySelector('form').addEventListener('submit', e => {
         ui.addProfileToList(profile);
         ui.clearField();
     }
-
 });
 
 
-// // Event delegation (parent) for delete item
-// document.querySelector('#profile-list').addEventListener('click', e => {
-//     //Instantiate UI object
-//     const ui = new UI();
-//     ui.showAlert('Profile is removed successfully', 'info')
-//     ui.deleteProfile(e.target);
-// })
+// Event delegation (parent) for delete/edit item
+document.querySelector('#profile-list').addEventListener('click', e => {
+    //Instantiate UI object
+    const ui = new UI();
+    if (e.target.classList.contains('fa-trash')) {
+        ui.showAlert('Profile is removed successfully', 'info')
+        ui.deleteProfile(e.target);
+    } else {
+        ui.editProfile(e.target);
+    }
+})
