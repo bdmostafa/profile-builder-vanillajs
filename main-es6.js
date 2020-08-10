@@ -22,7 +22,25 @@ class Store {
         profiles.push(profile);
         localStorage.setItem('profiles', JSON.stringify(profiles));
     }
+    static getProfilesFromLocalStorage() {
+        let profiles;
+        if (localStorage.getItem('profiles') === null) {
+            profiles = [];
+        } else {
+            profiles = JSON.parse(localStorage.getItem('profiles'))
+        }
+        return profiles;
+    }
+    static displayProfiles() {
+        const profiles = Store.getProfilesFromLocalStorage();
+        profiles.forEach(profile => {
+            const ui = new UI();
+            ui.addProfileToList(profile)
+        })
+    }
 }
+// Trigger after DOMLoaded
+window.addEventListener('DOMContentLoaded', Store.displayProfiles);
 
 class UI {
     addProfileToList({
