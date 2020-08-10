@@ -7,6 +7,22 @@ class Profile {
     }
 }
 
+class Store {
+    static addProfileToStorage(profile) {
+        let profiles;
+        // When first profile is added, assign empty array to profiles
+        if (localStorage.getItem('profiles') === null) {
+            profiles = [];
+        } else {
+            // Get the existing profiles to the array
+            profiles = JSON.parse(localStorage.getItem('profiles'));
+        }
+        // Adding new profile
+        profiles.push(profile);
+        localStorage.setItem('profiles', JSON.stringify(profiles));
+    }
+}
+
 class UI {
     addProfileToList({
         // Object destructuring from profile object
@@ -72,16 +88,25 @@ document.querySelector('form').addEventListener('submit', e => {
     const name = document.querySelector('#name').value;
     const email = document.querySelector('#email').value;
     const profession = document.querySelector('#profession').value;
-    // Instantiate profile object
-    const profile = new Profile(name, email, profession);
+
     //Instantiate UI object
     const ui = new UI();
+
+    // Instantiate profile object
+    const profile = new Profile(name, email, profession);
+
     // Validation
     if (name === '' || email === '' || profession === '') {
         ui.showAlert('Please fill up the form', 'warning')
     } else {
-        ui.showAlert('You added profile successfully.', 'success')
+        ui.showAlert('You added profile successfully.', 'success');
+        // Adding profile to list
         ui.addProfileToList(profile);
+
+        // Adding profile to local storage
+        // Its not needed to instantiate. Its used as a 'static' because this architecture is not used outside. Its only for storage purposes
+        Store.addProfileToStorage(profile);
+
         ui.clearField();
     }
 
