@@ -1,6 +1,7 @@
 // Create a Profile class
 class Profile {
-    constructor(name, email, profession) {
+    constructor(id, name, email, profession) {
+        this.id = id;
         this.name = name;
         this.email = email;
         this.profession = profession;
@@ -10,7 +11,7 @@ class Profile {
 class Store {
     static addProfileToStorage(profile) {
         let profiles;
-        // When first profile is added, assign empty array to profiles
+        // When first profile is added or if there is no profiles key in local storage, assign empty array to profiles
         if (localStorage.getItem('profiles') === null) {
             profiles = [];
         } else {
@@ -26,6 +27,7 @@ class Store {
 class UI {
     addProfileToList({
         // Object destructuring from profile object
+        id,
         name,
         email,
         profession
@@ -33,10 +35,11 @@ class UI {
         // Create html table
         const tr = document.createElement('tr');
         tr.innerHTML = `
-        <th scope="row">1</th>
+        <th scope="row">${id}</th>
         <td>${name}</td>
         <td>${email}</td>
         <td>${profession}</td>
+        <input type="hidden" data-id="${id}" />
         <td><i id="delete" class="fa fa-trash"></i> <i id="edit" class="fa fa-edit"></i></td>
         `
         document.querySelector('#profile-list').appendChild(tr);
@@ -81,6 +84,9 @@ class UI {
             document.querySelector('.alert').remove();
         }, 1000)
     }
+    getId() {
+        return document.querySelectorAll('tr').length;
+    }
 }
 
 document.querySelector('form').addEventListener('submit', e => {
@@ -92,8 +98,11 @@ document.querySelector('form').addEventListener('submit', e => {
     //Instantiate UI object
     const ui = new UI();
 
+    const id = ui.getId();
+    console.log(id);
+
     // Instantiate profile object
-    const profile = new Profile(name, email, profession);
+    const profile = new Profile(id, name, email, profession);
 
     // Validation
     if (name === '' || email === '' || profession === '') {
