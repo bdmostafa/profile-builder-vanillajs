@@ -71,7 +71,6 @@ class UI {
         const tr = document.createElement('tr');
         // Creating HTML (tr, td) and hidden input element to track id (special identification)
         tr.innerHTML = `
-        <th scope="row">#</th>
         <td>${name}</td>
         <td>${email}</td>
         <td>${profession}</td>
