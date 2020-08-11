@@ -9,6 +9,7 @@ class Profile {
 }
 
 class Store {
+    // Adding profiles to local storage
     static addProfileToStorage(profile) {
         let profiles;
         // When first profile is added or if there is no profiles key in local storage, assign empty array to profiles
@@ -20,17 +21,20 @@ class Store {
         }
         // Adding new profile
         profiles.push(profile);
+        console.log(profiles)
         localStorage.setItem('profiles', JSON.stringify(profiles));
     }
+    // Getting profiles from local storage
     static getProfilesFromLocalStorage() {
         let profiles;
         if (localStorage.getItem('profiles') === null) {
             profiles = [];
         } else {
-            profiles = JSON.parse(localStorage.getItem('profiles'))
+            profiles = JSON.parse(localStorage.getItem('profiles'));
         }
         return profiles;
     }
+    // Displaying profiles from local storage
     static displayProfiles() {
         const profiles = Store.getProfilesFromLocalStorage();
         profiles.forEach(profile => {
@@ -38,11 +42,24 @@ class Store {
             ui.addProfileToList(profile)
         })
     }
+    // Removing profiles from local storage
+    static removeFromLocalStorage(id) {
+        const profiles = Store.getProfilesFromLocalStorage();
+        profiles.forEach((profile, index) => {
+
+            // console.log('profile -id:', typeof profile.id, 'current-id:', typeof id)
+            if (profile.id === id) {
+                profiles.splice(index, 1);
+            }
+        });
+        localStorage.setItem('profiles', JSON.stringify(profiles));
+    }
 }
 // Trigger after DOMLoaded
 window.addEventListener('DOMContentLoaded', Store.displayProfiles);
 
 class UI {
+    // Adding profiles to UI(User Interface)
     addProfileToList({
         // Object destructuring from profile object
         id,
@@ -52,26 +69,39 @@ class UI {
     }) {
         // Create html table
         const tr = document.createElement('tr');
+        // Creating HTML (tr, td) and hidden input element to track id (special identification)
         tr.innerHTML = `
-        <th scope="row">${id}</th>
+        <th scope="row">#</th>
         <td>${name}</td>
         <td>${email}</td>
         <td>${profession}</td>
-        <input type="hidden" data-id="${id}" />
+        <input type="hidden" data-id=${id} />
         <td><i id="delete" class="fa fa-trash"></i> <i id="edit" class="fa fa-edit"></i></td>
         `
+        // Append to the tbody
         document.querySelector('#profile-list').appendChild(tr);
     }
+    // Clearing fields when submitted the form
     clearField() {
         document.querySelector('#name').value = '';
         document.querySelector('#email').value = '';
         document.querySelector('#profession').value = '';
     }
+    // Delete profile on click event from display and local storage
     deleteProfile(target) {
         if (target.id === 'delete') {
+            // Getting id from target hidden input
+            const id = target.parentElement.previousElementSibling.dataset.id;
+
+            // Converting string 'id' into number for future comparing
+            //  Removing profiles from local storage
+            Store.removeFromLocalStorage(parseInt(id));
+
+            // Removing tr from UI
             target.parentElement.parentElement.remove();
         }
     }
+    // Edit profile on click event and adding it into local storage newly
     editProfile(target) {
         if (target.id === 'edit') {
             const parent = target.parentElement.parentElement;
@@ -83,6 +113,10 @@ class UI {
             document.querySelector('#name').value = targetName;
             document.querySelector('#email').value = targetEmail;
             document.querySelector('#profession').value = targetProfession;
+            // Remove current profile from local
+            const id = target.parentElement.previousElementSibling.dataset.id;
+            Store.removeFromLocalStorage(parseInt(id));
+            // Remove current profile from display
             target.parentElement.parentElement.remove();
         }
     }
@@ -117,7 +151,6 @@ document.querySelector('form').addEventListener('submit', e => {
     const ui = new UI();
 
     const id = ui.getId();
-    console.log(id);
 
     // Instantiate profile object
     const profile = new Profile(id, name, email, profession);
@@ -134,9 +167,9 @@ document.querySelector('form').addEventListener('submit', e => {
         // Its not needed to instantiate. Its used as a 'static' because this architecture is not used outside. Its only for storage purposes
         Store.addProfileToStorage(profile);
 
+        // Clear input field when form is submitted
         ui.clearField();
     }
-
 });
 
 
