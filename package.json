@@ -1,0 +1,24 @@
+{
+  "name": "profile-builder-vanilla",
+  "version": "1.0.0",
+  "description": "Profile builder app with OOJ pattern, webpack babel, local storage.",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack --watch",
+    "dev:server": "webpack-dev-server --open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0"
+  }
+}
